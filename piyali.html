@@ -1,18 +1,154 @@
-<div class="container">
-    <h2 class="title">Chemistry Reactions</h2>
-    <p class="subtitle">Enter 20 balanced chemical reactions below.</p>
-    <div class="reactions-grid">
-        <div class="reaction-box">
-            <label for="reaction1">Reaction 1:</label>
-            <input type="text" id="reaction1" placeholder="e.g., 2H₂ + O₂ → 2H₂O">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chemical Reaction Simulator</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+
+        .container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 90%;
+            max-width: 600px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .input-group {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 1.5rem 0;
+        }
+
+        .input-group input {
+            width: 45%;
+            padding: 0.75rem;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .input-group span {
+            font-size: 1.5rem;
+            margin: 0 10px;
+        }
+
+        button {
+            padding: 0.75rem 2rem;
+            font-size: 1.1rem;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .result-container {
+            margin-top: 2rem;
+            padding: 1rem;
+            border: 2px dashed #007bff;
+            border-radius: 5px;
+        }
+
+        #result-text {
+            font-size: 1.2rem;
+            color: #555;
+            white-space: pre-wrap;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Chemical Reaction Simulator</h1>
+        <p>Enter two reagents to see the reaction products.</p>
+        <div class="input-group">
+            <input type="text" id="reagent1" placeholder="Reagent 1 (e.g., HCl)">
+            <span>+</span>
+            <input type="text" id="reagent2" placeholder="Reagent 2 (e.g., NaOH)">
         </div>
-        <div class="reaction-box">
-            <label for="reaction2">Reaction 2:</label>
-            <input type="text" id="reaction2" placeholder="e.g., 2KClO₃ → 2KCl + 3O₂">
-        </div>
-        <div class="reaction-box">
-            <label for="reaction20">Reaction 20:</label>
-            <input type="text" id="reaction20" placeholder="e.g., C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O">
+        <button id="react-btn">React</button>
+        <div class="result-container">
+            <h2>Result:</h2>
+            <p id="result-text">Products will appear here.</p>
         </div>
     </div>
-</div>
+
+    <script>
+        // A simple database of chemical reactions.
+        // You would need to expand this with many more reactions.
+        const reaction_database = {
+            // Acid-Base Reactions
+            'HCl+NaOH': 'NaCl + H₂O',
+            'NaOH+HCl': 'NaCl + H₂O',
+            'H₂SO₄+KOH': 'K₂SO₄ + H₂O',
+            'KOH+H₂SO₄': 'K₂SO₄ + H₂O',
+            // Synthesis Reactions
+            'H₂+O₂': 'H₂O',
+            'O₂+H₂': 'H₂O',
+            'Fe+S': 'FeS',
+            'S+Fe': 'FeS',
+            // Decomposition Reactions
+            'H₂O₂': 'H₂O + O₂', // This is a special case for single reagent
+            // ... add more reactions here
+        };
+
+        document.getElementById('react-btn').addEventListener('click', function() {
+            const reagent1 = document.getElementById('reagent1').value.trim();
+            const reagent2 = document.getElementById('reagent2').value.trim();
+            const resultText = document.getElementById('result-text');
+
+            // Handle single reagent reactions
+            if (reagent1 && !reagent2) {
+                const product = reaction_database[reagent1];
+                if (product) {
+                    resultText.innerText = `${reagent1} → ${product}`;
+                } else {
+                    resultText.innerText = "No reaction found for this single reagent. Try a two-reagent reaction!";
+                }
+                return;
+            }
+
+            // Handle two-reagent reactions
+            if (reagent1 && reagent2) {
+                // Create a key to look up in our database
+                // We handle both orders (e.g., A+B and B+A)
+                const key1 = `${reagent1}+${reagent2}`;
+                const key2 = `${reagent2}+${reagent1}`;
+
+                let product = reaction_database[key1] || reaction_database[key2];
+
+                if (product) {
+                    resultText.innerText = `${reagent1} + ${reagent2} → ${product}`;
+                } else {
+                    resultText.innerText = "Sorry, that reaction is not in our database yet.";
+                }
+            } else {
+                resultText.innerText = "Please enter both reagents.";
+            }
+        });
+    </script>
+</body>
+</html>
