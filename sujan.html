@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Word Counter</title>
+  <style>
+    /* Basic styling for the body */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+    }
+    /* Container for the word counter */
+    .word-counter-container {
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 20px;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      /* This makes the container responsive on smaller screens */
+      box-sizing: border-box; 
+    }
+    /* Heading style */
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    /* Textarea styling */
+    #text-input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+      resize: vertical;
+      box-sizing: border-box; /* Crucial for responsive width */
+    }
+    /* Word count display styling */
+    .word-count-display {
+      text-align: center;
+      font-size: 1.2em;
+      font-weight: bold;
+      color: #555;
+      margin-top: 15px;
+    }
+    #word-count {
+      color: #007BFF;
+    }
+    /* Media query for smaller screens */
+    @media (max-width: 768px) {
+      .word-counter-container {
+        margin: 20px;
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="word-counter-container">
+    
+    <h1>Word Counter</h1>
+    
+    <textarea id="text-input" rows="10" cols="50"></textarea>
+    
+    <p class="word-count-display">
+      Word Count: 
+      <span id="word-count">0</span>
+    </p>
+
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const textArea = document.getElementById('text-input');
+      const wordCountDisplay = document.getElementById('word-count');
+
+      textArea.addEventListener('input', function() {
+        const text = this.value;
+        // Trim leading/trailing whitespace and split by one or more spaces
+        const words = text.trim().split(/\s+/);
+        // If the text is empty, the word count should be 0, otherwise count the words
+        const wordCount = text.trim() === '' ? 0 : words.length;
+        // Update the display with the new count
+        wordCountDisplay.textContent = wordCount;
+      });
+    });
+  </script>
+
+</body>
+</html>
