@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indian History Timeline</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f3f3f7; /* Light gray background */
+            color: #1a1c1e; /* Dark gray text */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .timeline-container {
+            max-width: 600px;
+            width: 90%;
+            background-color: #ffffff;
+            border-radius: 28px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 24px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .event-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .event-year {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #006a6a; /* Teal accent color */
+            line-height: 1;
+        }
+
+        .event-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0;
+            color: #1a1c1e;
+        }
+
+        .event-description {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #49454f;
+            margin: 0;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .nav-button {
+            background-color: #006a6a;
+            color: #ffffff;
+            border: none;
+            border-radius: 100px;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .nav-button:hover:not(:disabled) {
+            background-color: #004d4d;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .timeline-container {
+                width: 95%;
+                padding: 16px;
+            }
+
+            .event-year {
+                font-size: 2rem;
+            }
+
+            .event-title {
+                font-size: 1.25rem;
+            }
+
+            .nav-button {
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="timeline-container">
+    <div class="event-card">
+        <h2 class="event-year" id="event-year"></h2>
+        <h3 class="event-title" id="event-title"></h3>
+        <p class="event-description" id="event-description"></p>
+    </div>
+    <div class="navigation">
+        <button id="prev-btn" class="nav-button" disabled>
+            <span class="material-symbols-outlined">arrow_back</span> Previous
+        </button>
+        <button id="next-btn" class="nav-button">
+            Next <span class="material-symbols-outlined">arrow_forward</span>
+        </button>
+    </div>
+</div>
+
+<script>
+    const events = [
+        {
+            year: "c. 2500 BCE",
+            title: "Indus Valley Civilization",
+            description: "One of the world's oldest urban civilizations flourished along the Indus River. Major cities like Harappa and Mohenjo-Daro had advanced urban planning, a drainage system, and a script that remains undeciphered."
+        },
+        {
+            year: "c. 1500 BCE",
+            title: "The Vedic Period",
+            description: "The Vedic Period saw the composition of the Vedas, the oldest scriptures of Hinduism. It was a time of pastoral societies and the development of early social structures and religious beliefs."
+        },
+        {
+            year: "c. 563 BCE",
+            title: "Birth of Gautama Buddha",
+            description: "Siddhartha Gautama, the founder of Buddhism, was born in Lumbini (modern-day Nepal). His teachings on the Four Noble Truths and the Eightfold Path spread across Asia."
+        },
+        {
+            year: "c. 322 BCE",
+            title: "Rise of the Mauryan Empire",
+            description: "Chandragupta Maurya founded the first pan-Indian empire, unifying most of the subcontinent. His grandson, Ashoka the Great, expanded the empire and later converted to Buddhism, promoting peace and welfare."
+        },
+        {
+            year: "c. 320 CE",
+            title: "The Gupta Empire (Golden Age)",
+            description: "Known as the 'Golden Age of India,' this era saw significant advancements in science, mathematics (including the invention of the decimal system and zero), astronomy, art, and Sanskrit literature."
+        },
+        {
+            year: "712 CE",
+            title: "Arab Conquest of Sindh",
+            description: "The Umayyad general Muhammad bin Qasim led the Arab conquest of Sindh, marking the beginning of Islamic influence on the Indian subcontinent."
+        },
+        {
+            year: "1192 CE",
+            title: "Second Battle of Tarain",
+            description: "Muhammad Ghori defeated Prithviraj Chauhan, paving the way for the establishment of the Delhi Sultanate and centuries of Islamic rule in Northern India."
+        },
+        {
+            year: "1336 CE",
+            title: "Vijayanagara Empire Founded",
+            description: "Harihara I and Bukka Raya I founded the Vijayanagara Empire in South India. It became a powerful Hindu kingdom and a center of art, culture, and trade."
+        },
+        {
+            year: "1526 CE",
+            title: "Establishment of the Mughal Empire",
+            description: "Babur, a Central Asian ruler, defeated Ibrahim Lodi at the Battle of Panipat, founding the Mughal Empire, which would rule much of the subcontinent for over 300 years."
+        },
+        {
+            year: "1600 CE",
+            title: "British East India Company Formed",
+            description: "Queen Elizabeth I granted a royal charter to the British East India Company, which would eventually lead to the company's control over large parts of India."
+        },
+        {
+            year: "1674 CE",
+            title: "Coronation of Shivaji",
+            description: "Chatrapati Shivaji Maharaj was crowned king of the Maratha Empire. He is celebrated for his military and administrative innovations, which challenged Mughal authority."
+        },
+        {
+            year: "1857 CE",
+            title: "The Great Revolt of 1857",
+            description: "A major uprising against the British East India Company. While suppressed, it led to the dissolution of the company and the direct rule of India by the British Crown (the British Raj)."
+        },
+        {
+            year: "1885 CE",
+            title: "Indian National Congress Formed",
+            description: "The INC was founded by Allan Octavian Hume and other leaders. It became the leading political party and a key force in the Indian Independence Movement."
+        },
+        {
+            year: "1905 CE",
+            title: "Partition of Bengal",
+            description: "The British government's decision to partition Bengal for administrative reasons sparked widespread protests and strengthened the Swadeshi (Boycott) movement."
+        },
+        {
+            year: "1919 CE",
+            title: "Jallianwala Bagh Massacre",
+            description: "British troops fired on a peaceful gathering of unarmed civilians in Amritsar. The event shocked the nation and fueled the demand for complete independence."
+        },
+        {
+            year: "1930 CE",
+            title: "Dandi March (Salt Satyagraha)",
+            description: "Mahatma Gandhi led a non-violent protest against the British salt monopoly, walking 240 miles to the coastal village of Dandi. It was a major act of civil disobedience."
+        },
+        {
+            year: "1942 CE",
+            title: "Quit India Movement",
+            description: "Led by Gandhi, this was a mass civil disobedience movement demanding an end to British rule in India. It resulted in mass arrests but showed the British the futility of continued rule."
+        },
+        {
+            year: "1947 CE",
+            title: "India Gains Independence",
+            description: "On August 15, 1947, India was declared an independent nation, ending nearly 200 years of British rule. The event was accompanied by the tragic partition of the subcontinent into India and Pakistan."
+        },
+        {
+            year: "1950 CE",
+            title: "Indian Constitution Adopted",
+            description: "On January 26, 1950, India adopted its Constitution, making it a sovereign, socialist, secular, and democratic republic. This day is celebrated as Republic Day."
+        },
+        {
+            year: "1971 CE",
+            title: "Indo-Pak War & Bangladesh Liberation",
+            description: "A military conflict between India and Pakistan resulted in the liberation of Bangladesh. It was a decisive victory for India and a pivotal moment in South Asian history."
+        }
+    ];
+
+    const yearEl = document.getElementById('event-year');
+    const titleEl = document.getElementById('event-title');
+    const descriptionEl = document.getElementById('event-description');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+
+    let currentIndex = 0;
+
+    function updateEventDisplay() {
+        const event = events[currentIndex];
+        yearEl.textContent = event.year;
+        titleEl.textContent = event.title;
+        descriptionEl.textContent = event.description;
+        
+        // Disable/enable buttons based on the current index
+        prevBtn.disabled = currentIndex === 0;
+        nextBtn.disabled = currentIndex === events.length - 1;
+    }
+
+    prevBtn.addEventListener('click', () => {
+        if (currentIndex > 0) {
+            currentIndex--;
+            updateEventDisplay();
+        }
+    });
+
+    nextBtn.addEventListener('click', () => {
+        if (currentIndex < events.length - 1) {
+            currentIndex++;
+            updateEventDisplay();
+        }
+    });
+
+    // Initial display
+    updateEventDisplay();
+</script>
+
+</body>
+</html>
