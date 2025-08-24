@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Element Finder</title>
+    <style>
+        /* CSS Variables for easy color changes */
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #2e7d32;
+            --background-color: #e8f5e9;
+            --card-bg-color: #fff;
+            --text-color: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background-color: var(--card-bg-color);
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+
+        p {
+            color: #666;
+            margin-top: 0;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+
+        button:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        #resultCard {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid var(--primary-color);
+            background-color: #f1f8e9;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            display: none; /* Initially hidden */
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        #elementSymbol {
+            font-size: 4em;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 0;
+        }
+
+        #elementName {
+            font-size: 1.5em;
+            margin: 5px 0 0;
+            color: var(--text-color);
+        }
+
+        #errorMessage {
+            color: #d32f2f;
+            font-weight: bold;
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Element Finder</h1>
+        <p>Type the name of an element (1-20) to see its symbol.</p>
+
+        <div class="input-group">
+            <input type="text" id="elementInput" placeholder="e.g., Oxygen">
+            <button id="searchButton">Find Symbol</button>
+        </div>
+        
+        <div id="resultCard">
+            <h2 id="elementSymbol"></h2>
+            <p id="elementName"></p>
+        </div>
+
+        <p id="errorMessage">Element not found. Please check your spelling.</p>
+    </div>
+
+    <script>
+        const elements = {
+            "hydrogen": { symbol: "H", name: "Hydrogen" },
+            "helium": { symbol: "He", name: "Helium" },
+            "lithium": { symbol: "Li", name: "Lithium" },
+            "beryllium": { symbol: "Be", name: "Beryllium" },
+            "boron": { symbol: "B", name: "Boron" },
+            "carbon": { symbol: "C", name: "Carbon" },
+            "nitrogen": { symbol: "N", name: "Nitrogen" },
+            "oxygen": { symbol: "O", name: "Oxygen" },
+            "fluorine": { symbol: "F", name: "Fluorine" },
+            "neon": { symbol: "Ne", name: "Neon" },
+            "sodium": { symbol: "Na", name: "Sodium" },
+            "magnesium": { symbol: "Mg", name: "Magnesium" },
+            "aluminum": { symbol: "Al", name: "Aluminum" },
+            "silicon": { symbol: "Si", name: "Silicon" },
+            "phosphorus": { symbol: "P", name: "Phosphorus" },
+            "sulfur": { symbol: "S", name: "Sulfur" },
+            "chlorine": { symbol: "Cl", name: "Chlorine" },
+            "argon": { symbol: "Ar", name: "Argon" },
+            "potassium": { symbol: "K", name: "Potassium" },
+            "calcium": { symbol: "Ca", name: "Calcium" }
+        };
+
+        const inputField = document.getElementById('elementInput');
+        const searchButton = document.getElementById('searchButton');
+        const resultCard = document.getElementById('resultCard');
+        const elementSymbol = document.getElementById('elementSymbol');
+        const elementName = document.getElementById('elementName');
+        const errorMessage = document.getElementById('errorMessage');
+
+        function findElement() {
+            const userInput = inputField.value.trim().toLowerCase();
+            const element = elements[userInput];
+
+            resultCard.style.display = 'none';
+            errorMessage.style.display = 'none';
+            resultCard.style.opacity = '0';
+
+            if (element) {
+                elementSymbol.textContent = element.symbol;
+                elementName.textContent = element.name;
+                resultCard.style.display = 'block';
+                setTimeout(() => resultCard.style.opacity = '1', 10);
+            } else {
+                errorMessage.style.display = 'block';
+            }
+        }
+
+        searchButton.addEventListener('click', findElement);
+        inputField.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                findElement();
+            }
+        });
+    </script>
+
+</body>
+</html>
